@@ -1,12 +1,17 @@
 const express = require("express")
-const dotenv = require("dotenv")
 const cors = require("cors")
+const dotenv = require("dotenv")
 const { chats } = require("./data")
+const connectDB = require("./config/database")
 
 const app = express()
+
+// Middleware
 app.use(cors())
 app.use(express.json())
+
 dotenv.config()
+connectDB()
 
 app.get("/", (request, response) => {
     response.send("API is running")

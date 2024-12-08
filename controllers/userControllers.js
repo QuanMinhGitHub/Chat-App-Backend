@@ -57,4 +57,14 @@ const authUser = asyncHandler(async (request, response) => {
     }
 })
 
-module.exports = { registerUser, authUser }
+const uploadFile = (request, response) => {
+    if (!request.file) {
+        return response.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // Send back the file URL from S3
+    const imageUrl = request.file.location;
+    response.status(200).json({ imageUrl });
+};
+
+module.exports = { registerUser, authUser, uploadFile }

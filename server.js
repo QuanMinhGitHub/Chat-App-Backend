@@ -3,6 +3,8 @@ const cors = require("cors")
 const dotenv = require("dotenv")
 const { chats } = require("./data")
 const connectDB = require("./config/database")
+const userRoutes = require("./routes/userRoutes")
+const { notFound, errorHandler } = require("./middleware/errorMiddleware")
 
 const app = express()
 
@@ -13,18 +15,10 @@ app.use(express.json())
 dotenv.config()
 connectDB()
 
-app.get("/", (request, response) => {
-    response.send("API is running")
-})
+app.use('/api/user', userRoutes)
 
-app.get("/api/chat", (request, response) => {
-    response.send(chats)
-})
-
-app.get("/api/chat/:id", (request, response) => {
-    const singleChat = chats.find((c) => c._id === request.params.id)
-    response.send(singleChat)
-})
+app.use(notFound)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
